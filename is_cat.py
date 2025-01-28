@@ -21,7 +21,7 @@
 #%HTCSS END
 
 import torch
-import glob
+import sys
 
 def main():
     input_name, output_name = sys.argv[1:3]
