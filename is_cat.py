@@ -9,7 +9,6 @@
 #request_memory=$(Memory)
 #transfer_output_files=cat_detection_model.pth
 #request_disk=$(DiskSpace)
-#queue from TABLE table.csv
 #%HTCSS TABLE
 # jobN, Image, Prediction, Error, App, Core, Memory, DiskSpace
 # 1, img001, img001_result.txt, 1.err, is_cat.py, 1, 2GB, 1GB

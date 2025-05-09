@@ -1,0 +1,43 @@
+%HTCSS TEMPLATE
+# TODO: map attributes in the parser
+universe=container # TODO: if container is specified, this should get set by parser.
+container_image=docker://pytorch/pytorch:2.6.0-cuda12.4-cudnn9-runtime
+arguments=$(Image) $(Prediction)
+error=is_cat_$(jobN).err
+log=is_cat.log
+request_cpus=1
+request_memory=2GB
+request_disk=1GB
+transfer_input_files=cat_detection_model.pth
+%HTCSS TABLE
+jobN, Image, Prediction
+1, img001, img001_result.txt
+2, img002, img002_result.txt
+3, img003, img003_result.txt
+4, img004, img004_result.txt
+5, img005, img005_result.txt
+6, img006, img006_result.txt
+%HTCSS EXEC
+import sys
+import torch
+
+def main():
+    input_name, output_name = sys.argv[1:3]
+    model = torch.load('cat_detection_model.pth')
+    model.eval()
+    is_cat(model, input_name, output_name)
+
+def is_cat(model, image, output_name):
+    """
+    Detect if an image contains a cat
+    """
+    image_tensor = torch.from_numpy(image).float().unsqueeze(0)
+    output = model(image_tensor)
+    is_cat = torch.nn.functional.softmax(output, dim=-1) > 0.8 
+    with open(output_name) as fout:
+        fout.write(is_cat)
+    return 0
+
+if __name__ == "__main__":
+    main()
+%HTCSS END
