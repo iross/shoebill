@@ -1,10 +1,10 @@
-# HTCondor Single-File Submit Tool
+# Shoebill - HTCondor Job Submission
 
-A specialized HTCondor job submission tool that implements a custom markup format (HTCSS) for embedding HTCondor submit descriptions and job tables within single files.
+A specialized HTCondor job submission tool that implements a custom markup format (Shoebill) for embedding HTCondor submit descriptions and job tables within single files.
 
 ## Features
 
-- **HTCSS Markup Format**: Embed HTCondor submit descriptions directly in `.htpy` files or Python comments
+- **Shoebill Markup Format**: Embed HTCondor submit descriptions directly in `.htpy` files or Python comments
 - **Job Tables**: Define multiple jobs with parameters in CSV format
 - **Executable Embedding**: Include Python code directly in submission files
 - **Automatic Processing**: Converts convenience attributes, adds container universe, generates queue statements
@@ -34,10 +34,10 @@ pre-commit install
 ### Basic Usage
 
 ```bash
-# Submit a .htpy file with HTCSS markup
+# Submit a .htpy file with Shoebill markup
 python parse.py job.htpy
 
-# Submit a Python file with HTCSS in comments
+# Submit a Python file with Shoebill in comments
 python parse.py --executable script.py
 
 # Dry run (show submit description without submitting)
@@ -47,9 +47,9 @@ python parse.py --dryrun job.htpy
 python parse.py --cleanup job.htpy
 ```
 
-## HTCSS Markup Format
+## Shoebill Markup Format
 
-HTCSS uses special markers to delimit sections in files:
+Shoebill uses special markers to delimit sections in files:
 
 ### Required Sections
 
@@ -158,7 +158,7 @@ pytest -v
 pytest tests/test_parse_htcss_string.py
 
 # Run specific test
-pytest tests/test_parse_htcss_string.py::TestParseHTCSSStringBasic::test_parse_valid_template_and_table
+pytest tests/test_parse_htcss_string.py::TestParseShoebillStringBasic::test_parse_valid_template_and_table
 
 # Run with coverage
 pytest --cov=parse --cov-report=html
@@ -168,7 +168,7 @@ pytest --cov=parse --cov-report=html
 
 The project has comprehensive test coverage (83 passing tests):
 
-- **`tests/test_parse_htcss_string.py`** (41 tests) - Core HTCSS parsing logic
+- **`tests/test_parse_htcss_string.py`** (41 tests) - Core Shoebill parsing logic
   - Valid/invalid templates
   - SUBMIT_REPLACEMENTS
   - Container handling
@@ -182,7 +182,7 @@ The project has comprehensive test coverage (83 passing tests):
 - **`tests/test_read_comments.py`** (19 tests) - Comment extraction
   - Python file tokenization
   - Various comment styles
-  - Integration with HTCSS parsing
+  - Integration with Shoebill parsing
 
 - **`tests/test_submission_flow.py`** (24 tests) - CLI and submission
   - File operations (`write_table`, `write_executable`)
@@ -259,12 +259,12 @@ See [`PRE_COMMIT_SETUP.md`](PRE_COMMIT_SETUP.md) for detailed documentation.
 ### Core Components
 
 - **`parse.py`** - Main parsing and submission logic
-  - `parse_htcss_string()` - Core HTCSS parser
+  - `parse_htcss_string()` - Core Shoebill parser
   - `parse_htcss_file()` - File-based parsing
-  - `read_comments()` - Extract HTCSS from Python comments
+  - `read_comments()` - Extract Shoebill from Python comments
   - `main()` - CLI entry point
 
-### HTCSS Processing
+### Shoebill Processing
 
 1. Parse input file to extract TEMPLATE, TABLE, and optional EXEC sections
 2. Write TABLE to temporary `_table.csv` file
@@ -313,7 +313,7 @@ Configured in `pyproject.toml`:
 ## Example Files
 
 - **`is_cat.htpy`** - Container-based cat detection job using PyTorch
-- **`is_cat.py`** - Python executable with HTCSS embedded in comments
+- **`is_cat.py`** - Python executable with Shoebill embedded in comments
 - **`Table Submit.ipynb`** - Jupyter notebook demonstrating parsing workflow
 
 ## Temporary Files

@@ -1,7 +1,7 @@
 [project]
-name = "htcondor-python-bindings-tests"
+name = "shoebill"
 version = "0.1.0"
-description = "Add your description here"
+description = "HTCondor job submission tool with embedded markup for single-file job definitions"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

@@ -4,10 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a specialized HTCondor job submission tool that implements a custom markup format for embedding HTCondor submit descriptions and job tables within single files. The tool parses these annotated files and submits jobs to HTCondor using the Python bindings. It includes a core parsing system (`parse.py`) that currently handles two input modes:
+**Shoebill** is a specialized HTCondor job submission tool that implements a custom markup format (Shoebill markup) for embedding HTCondor submit descriptions and job tables within single files. The tool parses these annotated files and submits jobs to HTCondor using the Python bindings. It includes a core parsing system (`parse.py`) that currently handles two input modes:
 
-1. **Direct HTCSS files** (`.htpy`): Plain text files with markup
-2. **Executable files with embedded HTCSS**: Python files where markup is embedded in comments (using `tokenize` module to extract)
+1. **Direct Shoebill files** (`.htpy`): Plain text files with markup
+2. **Executable files with embedded Shoebill**: Python files where markup is embedded in comments (using `tokenize` module to extract)
 
 In time, this should grow to a full library, which would also allow for "self-submitting notebooks" which can read cells and embedded comments and similar submit a job.
 ## Architecture
@@ -16,14 +16,14 @@ In time, this should grow to a full library, which would also allow for "self-su
 
 The parser handles two input modes:
 
-1. **Direct HTCSS files** (`.htpy`): Plain text files with HTCSS markup
-2. **Executable files with embedded HTCSS**: Python files where HTCSS markup is embedded in comments (using `tokenize` module to extract)
+1. **Direct Shoebill files** (`.htpy`): Plain text files with Shoebill markup
+2. **Executable files with embedded Shoebill**: Python files where Shoebill markup is embedded in comments (using `tokenize` module to extract)
 
-### HTCSS Markup Format
+### Shoebill Markup Format
 
 Files use special markers to delimit sections:
-- `%HTCSS <SECTION_NAME>` - Starts a section
-- `%HTCSS END` - Ends parsing (optional)
+- `%Shoebill <SECTION_NAME>` - Starts a section
+- `%Shoebill END` - Ends parsing (optional)
 
 **Required sections:**
 - `TEMPLATE` - HTCondor submit description
@@ -58,10 +58,10 @@ The parser automatically:
 ### Running the Tool
 
 ```bash
-# Submit a .htpy file with HTCSS markup
+# Submit a .htpy file with Shoebill markup
 python parse.py <file>.htpy
 
-# Submit a Python file with HTCSS in comments
+# Submit a Python file with Shoebill in comments
 python parse.py --executable <file>.py
 
 # Dry run (show submit description without submitting)
@@ -137,8 +137,8 @@ SKIP=pytest git commit
 
 ## Example Files
 
-- `is_cat.htpy` - Example HTCSS file with container-based cat detection job using PyTorch
-- `is_cat.py` - Example Python executable with HTCSS embedded in comments (currently incomplete/commented out)
+- `is_cat.htpy` - Example Shoebill file with container-based cat detection job using PyTorch
+- `is_cat.py` - Example Python executable with Shoebill embedded in comments (currently incomplete/commented out)
 - `Table Submit.ipynb` - Jupyter notebook demonstrating the parsing and submission workflow
 
 <!-- BACKLOG.MD MCP GUIDELINES START -->
