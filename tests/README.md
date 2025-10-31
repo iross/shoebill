@@ -1,4 +1,4 @@
-# Tests for HTCondor HTCSS Parser
+# Tests for HTCondor Shoebill Parser
 
 This directory contains comprehensive unit tests for the HTCondor single-file submission tool.
 
@@ -17,7 +17,7 @@ pytest -v
 pytest tests/test_parse_htcss_string.py
 
 # Run specific test
-pytest tests/test_parse_htcss_string.py::TestParseHTCSSStringBasic::test_parse_valid_template_and_table
+pytest tests/test_parse_htcss_string.py::TestParseShoebillStringBasic::test_parse_valid_template_and_table
 
 # Run with coverage report
 pytest --cov=parse --cov-report=html
@@ -36,7 +36,7 @@ uv pip install -e ".[dev]"
 ### Test Files
 
 - **`conftest.py`** - Shared fixtures and test configuration
-  - Sample HTCSS strings with various configurations
+  - Sample Shoebill strings with various configurations
   - Temporary file fixtures for testing file I/O
   - Mock HTCondor objects for submission testing
 
@@ -58,7 +58,7 @@ uv pip install -e ".[dev]"
 - **`test_read_comments.py`** - Tests for `read_comments()` function
   - Extracting comments from Python files using tokenize
   - Various comment styles
-  - Integration with HTCSS parsing
+  - Integration with Shoebill parsing
   - Edge cases and error handling
 
 - **`test_submission_flow.py`** - Tests for submission workflow
@@ -71,10 +71,10 @@ uv pip install -e ".[dev]"
 
 The `tests/fixtures/` directory contains sample files for testing:
 
-- **`simple.htpy`** - Basic HTCSS file with TEMPLATE and TABLE
-- **`with_exec.htpy`** - HTCSS file with EXEC section
-- **`with_container.htpy`** - HTCSS file using container_image
-- **`sample_script.py`** - Python file with HTCSS in comments
+- **`simple.htpy`** - Basic Shoebill file with TEMPLATE and TABLE
+- **`with_exec.htpy`** - Shoebill file with EXEC section
+- **`with_container.htpy`** - Shoebill file using container_image
+- **`sample_script.py`** - Python file with Shoebill in comments
 
 ## Test Coverage
 

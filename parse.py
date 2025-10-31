@@ -64,9 +64,8 @@ def parse_htcss_string(text: str) -> dict:
 
 
 def parse_htcss_file(file):
-    """Parse a txt file, looking for lines that start with %HTCSS and extract
-    the next word in that line. All of the text until the next line that starts
-    with %HTCSS should be captures
+    """Parse a Shoebill markup file (.htpy), extracting sections marked with %HTCSS.
+    Extracts TEMPLATE, TABLE, and optional EXEC sections for HTCondor job submission.
     """
     with open(file) as f:
         lines = f.read()

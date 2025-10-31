@@ -1,8 +1,8 @@
 """
-Shared fixtures for HTCondor HTCSS parser tests.
+Shared fixtures for Shoebill tests.
 
 This module provides common test fixtures including:
-- Sample HTCSS strings with various configurations
+- Sample Shoebill markup strings with various configurations
 - Sample file content for testing file parsing
 - Mock HTCondor objects for submission testing
 """
