@@ -79,12 +79,20 @@ Use uv for all package management.
 uv venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# Install dependencies with dev tools (includes pytest, ruff, pre-commit)
+# Install for development (without HTCondor - useful on macOS)
 uv pip install -e ".[dev]"
+
+# Install with HTCondor support (Linux only)
+uv pip install -e ".[dev,condor]"
+
+# Or install everything for production use
+uv pip install -e ".[all]"
 
 # Install pre-commit hooks (REQUIRED for development)
 pre-commit install
 ```
+
+**Note**: HTCondor is only available on Linux. On macOS/Windows, you can still develop and test the parsing/markup functionality without HTCondor installed. Tests requiring actual HTCondor submission will be automatically skipped on unsupported platforms.
 
 ### Testing
 

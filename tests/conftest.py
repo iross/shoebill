@@ -7,13 +7,34 @@ This module provides common test fixtures including:
 - Mock HTCondor objects for submission testing
 """
 
+import importlib
 import sys
 from unittest.mock import MagicMock
 
 import pytest
 
-# Mock htcondor module since it's not available in test environment
-sys.modules["htcondor"] = MagicMock()
+# Check if htcondor is available
+if importlib.util.find_spec("htcondor2") is not None:
+    HTCONDOR_AVAILABLE = True
+else:
+    HTCONDOR_AVAILABLE = False
+    sys.modules["htcondor2"] = MagicMock()
+    sys.modules["htcondor"] = MagicMock()
+
+
+# Pytest marker for tests that require actual HTCondor installation
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", "requires_htcondor: mark test as requiring HTCondor installation"
+    )
+
+
+@pytest.fixture
+def htcondor_available():
+    """Fixture that skips test if HTCondor is not available."""
+    if not HTCONDOR_AVAILABLE:
+        pytest.skip("HTCondor not available (not installed or unsupported platform)")
+    return True
 
 
 @pytest.fixture

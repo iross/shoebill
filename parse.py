@@ -3,7 +3,14 @@ import os
 import tokenize
 
 import click
-import htcondor2 as htcondor
+
+try:
+    import htcondor2 as htcondor
+
+    HTCONDOR_AVAILABLE = True
+except ImportError:
+    HTCONDOR_AVAILABLE = False
+    htcondor = None
 
 PATTERN = "%HTCSS"
 ENDPATTERN = "%HTCSS END"
@@ -104,6 +111,11 @@ def main(file, executable, cleanup, dryrun):
     if "EXEC" in res:
         write_executable(res["EXEC"])
         res["TEMPLATE"] += "executable = _exec.py\n"
+
+    if not HTCONDOR_AVAILABLE:
+        raise ImportError(
+            "HTCondor is not available. Install with: uv pip install -e '.[condor]' or '.[all]'"
+        )
 
     schedd = htcondor.Schedd()
     try:
