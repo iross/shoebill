@@ -3,7 +3,7 @@ import os
 import tokenize
 
 import click
-import htcondor as htcondor
+import htcondor2 as htcondor
 
 PATTERN = "%HTCSS"
 ENDPATTERN = "%HTCSS END"
