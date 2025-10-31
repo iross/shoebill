@@ -1,0 +1,14 @@
+%HTCSS TEMPLATE
+container_image = docker://ubuntu:22.04
+executable = /bin/bash
+arguments = script.sh $(Param)
+output = container_$(N).out
+error = container_$(N).err
+log = container.log
+TransferInputFiles = script.sh
+TransferOutputFiles = result.txt
+%HTCSS TABLE
+N, Param
+1, param1
+2, param2
+3, param3

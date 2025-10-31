@@ -1,0 +1,13 @@
+%HTCSS TEMPLATE
+executable = /bin/echo
+arguments = $(Message)
+output = simple_$(ID).out
+error = simple_$(ID).err
+log = simple.log
+request_cpus = 1
+request_memory = 512MB
+%HTCSS TABLE
+ID, Message
+1, "Hello World"
+2, "Testing HTCSS"
+3, "Sample Job"
