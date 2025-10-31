@@ -53,20 +53,20 @@ Shoebill uses special markers to delimit sections in files:
 
 ### Required Sections
 
-- **`%Shoebill TEMPLATE`** - HTCondor submit description
-- **`%Shoebill TABLE`** - CSV-formatted job parameters
+- **`%HTCSS TEMPLATE`** - HTCondor submit description
+- **`%HTCSS TABLE`** - CSV-formatted job parameters
 
 ### Optional Sections
 
-- **`%Shoebill EXEC`** - Python executable code (written to `_exec.py`)
-- **`%Shoebill END`** - Explicit end marker (optional)
+- **`%HTCSS EXEC`** - Python executable code (written to `_exec.py`)
+- **`%HTCSS END`** - Explicit end marker (optional)
 
 ### Example: Simple Job Submission
 
 Create a file `hello.htpy`:
 
 ```
-%Shoebill TEMPLATE
+%HTCSS TEMPLATE
 executable = /bin/echo
 arguments = $(Message)
 output = hello_$(JobID).out
@@ -75,7 +75,7 @@ log = hello.log
 request_cpus = 1
 request_memory = 1GB
 
-%Shoebill TABLE
+%HTCSS TABLE
 JobID, Message
 1, "Hello from job 1"
 2, "Hello from job 2"
@@ -93,7 +93,7 @@ python parse.py hello.htpy
 Create a file `process.htpy`:
 
 ```
-%Shoebill TEMPLATE
+%HTCSS TEMPLATE
 arguments = $(Input) $(Output)
 output = process_$(JobID).out
 error = process_$(JobID).err
@@ -101,12 +101,12 @@ log = process.log
 RequestCpus = 2
 RequestMemory = 2GB
 
-%Shoebill TABLE
+%HTCSS TABLE
 JobID, Input, Output
 1, data1.txt, result1.txt
 2, data2.txt, result2.txt
 
-%Shoebill EXEC
+%HTCSS EXEC
 import sys
 
 def main():
@@ -123,7 +123,7 @@ if __name__ == "__main__":
 ### Example: Container Job
 
 ```
-%Shoebill TEMPLATE
+%HTCSS TEMPLATE
 container_image = docker://python:3.12
 arguments = script.py $(Data)
 output = container_$(JobID).out
@@ -132,7 +132,7 @@ log = container.log
 TransferInputFiles = script.py, data.txt
 TransferOutputFiles = result.txt
 
-%Shoebill TABLE
+%HTCSS TABLE
 JobID, Data
 1, data1.txt
 2, data2.txt
