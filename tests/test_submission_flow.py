@@ -9,11 +9,12 @@ This module tests the main submission workflow including:
 - Integration tests for complete submission flow
 """
 
-import pytest
-import os
 from pathlib import Path
-from parse import write_table, write_executable, main
+
+import pytest
 from click.testing import CliRunner
+
+from parse import main, write_executable, write_table
 
 
 class TestWriteTable:
@@ -163,10 +164,10 @@ ID
 """)
 
             # Mock HTCondor
-            mock_schedd = mocker.patch('parse.htcondor.Schedd')
-            mock_submit = mocker.patch('parse.htcondor.Submit')
+            mocker.patch("parse.htcondor.Schedd")
+            mocker.patch("parse.htcondor.Submit")
 
-            result = runner.invoke(main, ['test.htpy', '--dryrun'])
+            result = runner.invoke(main, ["test.htpy", "--dryrun"])
 
             assert result.exit_code == 0
             assert Path("_table.csv").exists()
@@ -182,10 +183,10 @@ ID
 1
 """)
 
-            mock_schedd = mocker.patch('parse.htcondor.Schedd')
-            mock_submit_class = mocker.patch('parse.htcondor.Submit')
+            mock_schedd = mocker.patch("parse.htcondor.Schedd")
+            mocker.patch("parse.htcondor.Submit")
 
-            result = runner.invoke(main, ['test.htpy', '--dryrun'])
+            runner.invoke(main, ["test.htpy", "--dryrun"])
 
             # Schedd.submit should not be called in dryrun mode
             schedd_instance = mock_schedd.return_value
@@ -202,15 +203,17 @@ ID
 1
 """)
 
-            mocker.patch('parse.htcondor.Schedd')
-            mocker.patch('parse.htcondor.Submit')
+            mocker.patch("parse.htcondor.Schedd")
+            mocker.patch("parse.htcondor.Submit")
 
-            result = runner.invoke(main, ['test.htpy', '--dryrun', '--cleanup'])
+            runner.invoke(main, ["test.htpy", "--dryrun", "--cleanup"])
 
             # _table.csv should be removed
             assert not Path("_table.csv").exists()
 
-    @pytest.mark.xfail(reason="Comment extraction from Python files may fail due to line.startswith('#') check")
+    @pytest.mark.xfail(
+        reason="Comment extraction from Python files may fail due to line.startswith('#') check"
+    )
     def test_main_with_executable_flag(self, tmp_path, mocker):
         """Test --executable flag for Python files."""
         runner = CliRunner()
@@ -226,10 +229,10 @@ def main():
     print("test")
 """)
 
-            mocker.patch('parse.htcondor.Schedd')
-            mocker.patch('parse.htcondor.Submit')
+            mocker.patch("parse.htcondor.Schedd")
+            mocker.patch("parse.htcondor.Submit")
 
-            result = runner.invoke(main, ['test.py', '--executable', '--dryrun'])
+            result = runner.invoke(main, ["test.py", "--executable", "--dryrun"])
 
             assert result.exit_code == 0
             assert Path("_table.csv").exists()
@@ -248,10 +251,10 @@ ID
 print("Hello from exec")
 """)
 
-            mocker.patch('parse.htcondor.Schedd')
-            mocker.patch('parse.htcondor.Submit')
+            mocker.patch("parse.htcondor.Schedd")
+            mocker.patch("parse.htcondor.Submit")
 
-            result = runner.invoke(main, ['test.htpy', '--dryrun'])
+            runner.invoke(main, ["test.htpy", "--dryrun"])
 
             assert Path("_exec.py").exists()
             with open("_exec.py") as f:
@@ -270,10 +273,10 @@ ID, Value
 2, B
 """)
 
-            mocker.patch('parse.htcondor.Schedd')
-            mocker.patch('parse.htcondor.Submit')
+            mocker.patch("parse.htcondor.Schedd")
+            mocker.patch("parse.htcondor.Submit")
 
-            result = runner.invoke(main, ['test.htpy', '--dryrun'])
+            runner.invoke(main, ["test.htpy", "--dryrun"])
 
             assert Path("_table.csv").exists()
             with open("_table.csv") as f:
@@ -297,14 +300,14 @@ ID
 1
 """)
 
-            mock_schedd = mocker.patch('parse.htcondor.Schedd')
+            mock_schedd = mocker.patch("parse.htcondor.Schedd")
             mock_result = mocker.MagicMock()
             mock_result.__str__ = lambda self: "Submitted job cluster 12345"
             mock_schedd.return_value.submit.return_value = mock_result
 
-            mocker.patch('parse.htcondor.Submit')
+            mocker.patch("parse.htcondor.Submit")
 
-            result = runner.invoke(main, ['test.htpy'])
+            runner.invoke(main, ["test.htpy"])
 
             # Should call submit
             schedd_instance = mock_schedd.return_value
@@ -322,10 +325,10 @@ ID
 1
 """)
 
-            mock_schedd = mocker.patch('parse.htcondor.Schedd')
-            mock_submit_class = mocker.patch('parse.htcondor.Submit')
+            mocker.patch("parse.htcondor.Schedd")
+            mock_submit_class = mocker.patch("parse.htcondor.Submit")
 
-            result = runner.invoke(main, ['test.htpy', '--dryrun'])
+            runner.invoke(main, ["test.htpy", "--dryrun"])
 
             # Verify Submit was called with template containing universe
             assert mock_submit_class.called
@@ -345,9 +348,9 @@ ID
 1
 """)
 
-            mocker.patch('parse.htcondor.Schedd')
+            mocker.patch("parse.htcondor.Schedd")
 
-            result = runner.invoke(main, ['test.htpy'])
+            result = runner.invoke(main, ["test.htpy"])
 
             assert result.exit_code != 0
 
@@ -359,9 +362,9 @@ ID
 executable = /bin/true
 """)
 
-            mocker.patch('parse.htcondor.Schedd')
+            mocker.patch("parse.htcondor.Schedd")
 
-            result = runner.invoke(main, ['test.htpy'])
+            result = runner.invoke(main, ["test.htpy"])
 
             assert result.exit_code != 0
 
@@ -369,7 +372,7 @@ executable = /bin/true
         """Test error when input file doesn't exist."""
         runner = CliRunner()
         with runner.isolated_filesystem(temp_dir=tmp_path):
-            result = runner.invoke(main, ['nonexistent.htpy'])
+            result = runner.invoke(main, ["nonexistent.htpy"])
 
             assert result.exit_code != 0
 
@@ -385,10 +388,10 @@ ID
 """)
 
             # Mock Schedd to raise an exception
-            mock_schedd = mocker.patch('parse.htcondor.Schedd')
+            mock_schedd = mocker.patch("parse.htcondor.Schedd")
             mock_schedd.side_effect = RuntimeError("Unable to locate local daemon")
 
-            result = runner.invoke(main, ['test.htpy'])
+            result = runner.invoke(main, ["test.htpy"])
 
             # Should handle the error (exit code indicates failure)
             assert result.exit_code != 0
@@ -405,10 +408,10 @@ class TestIntegrationWithFixtures:
 
         runner = CliRunner()
 
-        mock_schedd = mocker.patch('parse.htcondor.Schedd')
-        mocker.patch('parse.htcondor.Submit')
+        mocker.patch("parse.htcondor.Schedd")
+        mocker.patch("parse.htcondor.Submit")
 
-        result = runner.invoke(main, [str(fixture_path), '--dryrun', '--cleanup'])
+        result = runner.invoke(main, [str(fixture_path), "--dryrun", "--cleanup"])
 
         assert result.exit_code == 0
 
@@ -420,10 +423,10 @@ class TestIntegrationWithFixtures:
 
         runner = CliRunner()
 
-        mock_schedd = mocker.patch('parse.htcondor.Schedd')
-        mocker.patch('parse.htcondor.Submit')
+        mocker.patch("parse.htcondor.Schedd")
+        mocker.patch("parse.htcondor.Submit")
 
-        result = runner.invoke(main, [str(fixture_path), '--dryrun'])
+        result = runner.invoke(main, [str(fixture_path), "--dryrun"])
 
         assert result.exit_code == 0
         # Verify _exec.py was created
@@ -437,9 +440,9 @@ class TestIntegrationWithFixtures:
 
         runner = CliRunner()
 
-        mock_schedd = mocker.patch('parse.htcondor.Schedd')
-        mocker.patch('parse.htcondor.Submit')
+        mocker.patch("parse.htcondor.Schedd")
+        mocker.patch("parse.htcondor.Submit")
 
-        result = runner.invoke(main, [str(fixture_path), '--dryrun'])
+        result = runner.invoke(main, [str(fixture_path), "--dryrun"])
 
         assert result.exit_code == 0

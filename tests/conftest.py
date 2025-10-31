@@ -7,13 +7,13 @@ This module provides common test fixtures including:
 - Mock HTCondor objects for submission testing
 """
 
-import pytest
 import sys
-from pathlib import Path
 from unittest.mock import MagicMock
 
+import pytest
+
 # Mock htcondor module since it's not available in test environment
-sys.modules['htcondor'] = MagicMock()
+sys.modules["htcondor"] = MagicMock()
 
 
 @pytest.fixture

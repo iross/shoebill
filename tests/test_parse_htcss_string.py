@@ -10,7 +10,8 @@ This module tests the core HTCSS string parsing logic, including:
 """
 
 import pytest
-from parse import parse_htcss_string, SUBMIT_REPLACEMENTS
+
+from parse import SUBMIT_REPLACEMENTS, parse_htcss_string
 
 
 class TestParseHTCSSStringBasic:
@@ -56,7 +57,7 @@ class TestParseHTCSSStringBasic:
 
         # Verify multiple lines in template
         lines = result["TEMPLATE"].split("\n")
-        assert len([l for l in lines if l.strip()]) >= 5
+        assert len([line for line in lines if line.strip()]) >= 5
 
         # Verify table has multiple rows
         table_lines = result["TABLE"].split("\n")
@@ -87,7 +88,7 @@ class TestParseHTCSSStringErrorHandling:
     def test_no_htcss_markers(self):
         """Test parsing text without HTCSS markers."""
         text = "This is just plain text\nwith no HTCSS markers"
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             parse_htcss_string(text)
 
 
@@ -236,8 +237,10 @@ class TestParseHTCSSStringQueueStatement:
         assert "queue from TABLE _table.csv" in result["TEMPLATE"]
         # Verify universe comes before queue
         template_lines = result["TEMPLATE"].split("\n")
-        universe_idx = next(i for i, l in enumerate(template_lines) if "universe = container" in l)
-        queue_idx = next(i for i, l in enumerate(template_lines) if "queue from TABLE" in l)
+        universe_idx = next(
+            i for i, line in enumerate(template_lines) if "universe = container" in line
+        )
+        queue_idx = next(i for i, line in enumerate(template_lines) if "queue from TABLE" in line)
         assert universe_idx < queue_idx
 
 

@@ -33,7 +33,7 @@ def is_cat(model, image, output_name):
     """
     image_tensor = torch.from_numpy(image).float().unsqueeze(0)
     output = model(image_tensor)
-    is_cat = torch.nn.functional.softmax(output, dim=-1) > 0.8 
+    is_cat = torch.nn.functional.softmax(output, dim=-1) > 0.8
     with open(output_name) as fout:
         fout.write(is_cat)
     return 0

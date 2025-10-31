@@ -75,16 +75,65 @@ python parse.py --cleanup <file>
 Use uv for all package management.
 
 ```bash
-# Install dependencies (uses uv)
-uv pip install -e .
+# Create and activate virtual environment
+uv venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies with dev tools (includes pytest, ruff, pre-commit)
+uv pip install -e ".[dev]"
+
+# Install pre-commit hooks (REQUIRED for development)
+pre-commit install
 ```
+
+### Testing
+
+```bash
+# Run all tests
+pytest
+
+# Run tests with verbose output
+pytest -v
+
+# Run specific test file
+pytest tests/test_parse_htcss_string.py
+```
+
+See `tests/README.md` for comprehensive testing documentation.
+
+### Code Quality & Pre-commit Hooks
+
+This project uses pre-commit hooks to automatically ensure code quality before commits:
+
+- **Ruff**: Fast Python linter and formatter (replaces black, flake8, isort)
+- **Pytest**: All unit tests must pass before commit
+- **Standard checks**: Trailing whitespace, file endings, YAML validation, etc.
+
+```bash
+# Run pre-commit hooks manually on all files
+pre-commit run --all-files
+
+# Run pre-commit on staged files only
+pre-commit run
+
+# Update hook versions to latest
+pre-commit autoupdate
+
+# Skip hooks for emergency commits (use sparingly!)
+git commit --no-verify
+
+# Skip specific hook
+SKIP=pytest git commit
+```
+
+**Note**: Pre-commit hooks are automatically run before each commit. If hooks fail, the commit will be blocked until issues are fixed.
 
 ## Key Implementation Details
 
 - The parser uses `parse_htcss_string()` as the core parsing function, making it testable independently of file I/O
 - Temporary files (`_table.csv`, `_exec.py`) are created in the current working directory
 - The tool requires a running HTCondor scheduler to submit jobs (will fail with "Unable to locate local daemon" if HTCondor is not running)
-- Lines 53 and 111 in parse.py contain `pdb.set_trace()` debug breakpoints that should be removed for production use
+- Code quality is enforced through pre-commit hooks (ruff linting/formatting + pytest)
 
 ## Example Files
 

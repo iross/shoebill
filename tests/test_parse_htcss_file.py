@@ -7,8 +7,10 @@ This module tests file-based HTCSS parsing, including:
 - File I/O error handling
 """
 
-import pytest
 from pathlib import Path
+
+import pytest
+
 from parse import parse_htcss_file
 
 
@@ -137,7 +139,7 @@ executable = /bin/true
         """Test parsing an empty file."""
         htpy_file = tmp_path / "empty.htpy"
         htpy_file.write_text("")
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             parse_htcss_file(str(htpy_file))
 
     def test_parse_file_with_only_comments(self, tmp_path):
@@ -147,7 +149,7 @@ executable = /bin/true
 # Another comment
 # No HTCSS markers here
 """)
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             parse_htcss_file(str(htpy_file))
 
 
@@ -174,13 +176,16 @@ class TestParseHTCSSFileIntegration:
     def test_parse_file_with_utf8_characters(self, tmp_path):
         """Test parsing file with UTF-8 characters."""
         htpy_file = tmp_path / "utf8.htpy"
-        htpy_file.write_text("""%HTCSS TEMPLATE
+        htpy_file.write_text(
+            """%HTCSS TEMPLATE
 executable = /bin/echo
 arguments = "Hello 世界 🌍"
 %HTCSS TABLE
 ID
 1
-""", encoding='utf-8')
+""",
+            encoding="utf-8",
+        )
 
         result = parse_htcss_file(str(htpy_file))
         assert "Hello 世界 🌍" in result["TEMPLATE"]
@@ -189,7 +194,7 @@ ID
         """Test parsing file with Windows line endings (CRLF)."""
         htpy_file = tmp_path / "crlf.htpy"
         content = "%HTCSS TEMPLATE\r\nexecutable = /bin/echo\r\n%HTCSS TABLE\r\nID\r\n1\r\n"
-        htpy_file.write_bytes(content.encode('utf-8'))
+        htpy_file.write_bytes(content.encode("utf-8"))
 
         result = parse_htcss_file(str(htpy_file))
         assert "TEMPLATE" in result

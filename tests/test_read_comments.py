@@ -8,8 +8,10 @@ This module tests comment extraction from Python files using tokenize, including
 - Error handling for malformed Python files
 """
 
-import pytest
 import io
+
+import pytest
+
 from parse import read_comments
 
 
@@ -30,7 +32,7 @@ print("Hello")
 
     def test_read_htcss_comments(self, python_file_with_htcss_comments):
         """Test extracting HTCSS markup from Python comments."""
-        code = python_file_with_htcss_comments.encode('utf-8')
+        code = python_file_with_htcss_comments.encode("utf-8")
         result = read_comments(io.BytesIO(code))
 
         assert "%HTCSS TEMPLATE" in result
@@ -46,7 +48,9 @@ print("test")
 """
         result = read_comments(io.BytesIO(code))
         # Should not have leading # after stripping
-        assert result.strip().startswith("Comment line") or result.strip().startswith(" Comment line")
+        assert result.strip().startswith("Comment line") or result.strip().startswith(
+            " Comment line"
+        )
 
     def test_read_multiline_comments(self):
         """Test reading multiple consecutive comment lines."""
@@ -169,12 +173,14 @@ def broken syntax here(
 class TestReadCommentsIntegration:
     """Integration tests for comment extraction with HTCSS parsing."""
 
-    @pytest.mark.xfail(reason="Comment extraction from Python files may fail due to line.startswith('#') check")
+    @pytest.mark.xfail(
+        reason="Comment extraction from Python files may fail due to line.startswith('#') check"
+    )
     def test_extract_and_parse_htcss_from_python(self, python_file_with_htcss_comments):
         """Test extracting HTCSS from Python file and parsing it."""
         from parse import parse_htcss_string
 
-        code = python_file_with_htcss_comments.encode('utf-8')
+        code = python_file_with_htcss_comments.encode("utf-8")
         comments = read_comments(io.BytesIO(code))
 
         # Should be able to parse the extracted comments
@@ -195,7 +201,9 @@ class TestReadCommentsIntegration:
             assert "%HTCSS TEMPLATE" in result
             assert "%HTCSS TABLE" in result
 
-    @pytest.mark.xfail(reason="Comment extraction from Python files may fail due to line.startswith('#') check")
+    @pytest.mark.xfail(
+        reason="Comment extraction from Python files may fail due to line.startswith('#') check"
+    )
     def test_full_workflow_python_to_submit(self, sample_py_file):
         """Test complete workflow: Python file -> comments -> HTCSS parse."""
         from parse import parse_htcss_string

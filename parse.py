@@ -1,36 +1,35 @@
 #!/usr/bin/env python
 import os
 import tokenize
+
 import click
 import htcondor as htcondor
 
 PATTERN = "%HTCSS"
 ENDPATTERN = "%HTCSS END"
 SUBMIT_REPLACEMENTS = {
-    "RequestDisk" : "request_disk",
-    "RequestMemory" : "request_memory",
-    "RequestCpus" : "request_cpus",
-    "TransferInputFiles" : "transfer_input_files",
-    "TransferOutputFiles" : "transfer_output_files"
+    "RequestDisk": "request_disk",
+    "RequestMemory": "request_memory",
+    "RequestCpus": "request_cpus",
+    "TransferInputFiles": "transfer_input_files",
+    "TransferOutputFiles": "transfer_output_files",
 }
 
 
-
-
-def read_comments(fileObj: bytes):
-    comments = ''
-    for toktype, tok, start, end, line in tokenize.tokenize(fileObj.readline):
+def read_comments(file_obj: bytes):
+    comments = ""
+    for toktype, _tok, _start, _end, line in tokenize.tokenize(file_obj.readline):
         # we can also use token.tok_name[toktype] instead of 'COMMENT'
         # from the token module
         if toktype == tokenize.COMMENT and line.startswith("#"):
-            if line[0] == "#": # TODO: make this less bad.
+            if line[0] == "#":  # TODO: make this less bad.
                 line = line[1:]
-            comments+=line
+            comments += line
     return comments
 
 
 def parse_htcss_string(text: str) -> dict:
-    text = [i+"\n" for i in text.split("\n")]
+    text = [i + "\n" for i in text.split("\n")]
     result = {}
     in_block = False
     current_block_name = None
@@ -63,6 +62,7 @@ def parse_htcss_string(text: str) -> dict:
     # TODO: Check for validity of submit template and/or input tables.
     return result
 
+
 def parse_htcss_file(file):
     """Parse a txt file, looking for lines that start with %HTCSS and extract
     the next word in that line. All of the text until the next line that starts
@@ -72,10 +72,12 @@ def parse_htcss_file(file):
         lines = f.read()
     return parse_htcss_string(lines)
 
+
 def write_table(table):
     with open("_table.csv", "w") as f:
         f.write(table)
     return 0
+
 
 def write_executable(executable):
     with open("_exec.py", "w") as f:
@@ -84,10 +86,15 @@ def write_executable(executable):
 
 
 @click.command()
-@click.option("--executable", help="Treat the input file as an executable and extract from comments", is_flag=True, default=False)
+@click.option(
+    "--executable",
+    help="Treat the input file as an executable and extract from comments",
+    is_flag=True,
+    default=False,
+)
 @click.option("--cleanup", help="Cleanup after running", is_flag=True, default=False)
 @click.option("--dryrun", help="Don't submit.", is_flag=True, default=False)
-@click.argument('file', type=click.Path(exists=True))
+@click.argument("file", type=click.Path(exists=True))
 def main(file, executable, cleanup, dryrun):
     if executable:
         with open(file, "rb") as file:
@@ -112,6 +119,7 @@ def main(file, executable, cleanup, dryrun):
         raise
     if cleanup:
         os.remove("_table.csv")
+
 
 if __name__ == "__main__":
     main()

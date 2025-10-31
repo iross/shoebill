@@ -12,9 +12,11 @@
 # 1, process.py, data1.txt
 # 2, process.py, data2.txt
 
+
 def main():
     """Sample Python script with HTCSS markup in comments."""
     print("This script demonstrates HTCSS in Python comments")
+
 
 if __name__ == "__main__":
     main()
