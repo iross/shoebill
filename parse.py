@@ -36,7 +36,12 @@ def parse_htcss_string(text: str) -> dict:
     current_block_name = None
     block_contents = []
     for line in text:
-        if line.startswith(PATTERN):
+        if line.startswith(ENDPATTERN):
+            if in_block:
+                result[current_block_name] = "".join(block_contents).strip()
+            in_block = False
+            break
+        elif line.startswith(PATTERN):
             if in_block:
                 result[current_block_name] = "".join(block_contents).strip()
                 block_contents = []
@@ -44,16 +49,11 @@ def parse_htcss_string(text: str) -> dict:
             in_block = True
         elif in_block:
             block_contents.append(line)
-        elif line.startswith(ENDPATTERN):
-            in_block = False
-            break
     if in_block:
         result[current_block_name] = "".join(block_contents).strip()
-    print(result)
-    import pdb; pdb.set_trace()
-    if not result["TEMPLATE"] or not result["TABLE"]:
+    if not result.get("TEMPLATE") or not result.get("TABLE"):
         raise Exception("Missing template or table in submission file")
-    if "container_image" in result["TEMPLATE"]:
+    if "container_image" in result.get("TEMPLATE", ""):
         result["TEMPLATE"] += "universe = container\n"
     result["TEMPLATE"] += "\nqueue from TABLE _table.csv\n"
 
@@ -107,8 +107,9 @@ def main(file, executable, cleanup, dryrun):
         else:
             submit_result = schedd.submit(htcondor.Submit(res["TEMPLATE"]))
             print(submit_result)
-    except TypeError:
-        import pdb; pdb.set_trace()
+    except TypeError as e:
+        print(f"Error during submission: {e}")
+        raise
     if cleanup:
         os.remove("_table.csv")
 
