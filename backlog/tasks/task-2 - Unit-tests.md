@@ -1,9 +1,10 @@
 ---
 id: task-2
 title: Unit tests
-status: To Do
+status: Done
 assignee: []
 created_date: '2025-10-31 19:08'
+updated_date: '2025-10-31 19:33'
 labels: []
 dependencies: []
 ---
@@ -156,52 +157,52 @@ def mock_schedd(mocker):
    - Run tests on push/PR
 
 ## Acceptance Criteria
-
+<!-- AC:BEGIN -->
 ### Infrastructure
-- [ ] pytest and pytest-mock added to `pyproject.toml`
-- [ ] `tests/` directory created with proper structure
-- [ ] `conftest.py` contains shared fixtures for test data
-- [ ] Tests can be run with `pytest` command
-- [ ] Test fixtures directory contains sample `.htpy` and `.py` files
+- [x] #1 pytest and pytest-mock added to `pyproject.toml`
+- [x] #2 `tests/` directory created with proper structure
+- [x] #3 `conftest.py` contains shared fixtures for test data
+- [x] #4 Tests can be run with `pytest` command
+- [x] #5 Test fixtures directory contains sample `.htpy` and `.py` files
 
 ### Parsing Tests
-- [ ] Test `parse_htcss_string()` with valid TEMPLATE and TABLE
-- [ ] Test `parse_htcss_string()` with TEMPLATE, TABLE, and EXEC
-- [ ] Test missing TEMPLATE raises exception
-- [ ] Test missing TABLE raises exception
-- [ ] Test `parse_htcss_file()` reads and parses `.htpy` files correctly
-- [ ] Test edge cases: empty sections, missing END marker, multiple blocks
+- [x] #6 Test `parse_htcss_string()` with valid TEMPLATE and TABLE
+- [x] #7 Test `parse_htcss_string()` with TEMPLATE, TABLE, and EXEC
+- [x] #8 Test missing TEMPLATE raises exception
+- [x] #9 Test missing TABLE raises exception
+- [x] #10 Test `parse_htcss_file()` reads and parses `.htpy` files correctly
+- [x] #11 Test edge cases: empty sections, missing END marker, multiple blocks
 
 ### Transformation Tests
-- [ ] Test all SUBMIT_REPLACEMENTS are applied correctly
-- [ ] Test `container_image` in template adds `universe = container`
-- [ ] Test EXEC section triggers `executable = _exec.py` addition
-- [ ] Test `queue from TABLE _table.csv` is always appended
+- [x] #12 Test all SUBMIT_REPLACEMENTS are applied correctly
+- [x] #13 Test `container_image` in template adds `universe = container`
+- [x] #14 Test EXEC section triggers `executable = _exec.py` addition
+- [x] #15 Test `queue from TABLE _table.csv` is always appended
 
 ### Comment Extraction Tests
-- [ ] Test `read_comments()` extracts comments from Python file
-- [ ] Test `--executable` flag triggers comment extraction mode
-- [ ] Test tokenization handles various comment styles
-- [ ] Test error handling for malformed Python files
+- [x] #16 Test `read_comments()` extracts comments from Python file
+- [x] #17 Test `--executable` flag triggers comment extraction mode
+- [x] #18 Test tokenization handles various comment styles
+- [x] #19 Test error handling for malformed Python files
 
 ### Submission Tests (Mocked)
-- [ ] Test successful submission flow with mocked `htcondor.Schedd`
-- [ ] Test `write_table()` creates `_table.csv` correctly
-- [ ] Test `write_executable()` creates `_exec.py` correctly
-- [ ] Test `--dryrun` flag prevents actual submission
-- [ ] Test `--cleanup` flag removes temporary files
-- [ ] Test error handling when scheduler is unavailable
+- [x] #20 Test successful submission flow with mocked `htcondor.Schedd`
+- [x] #21 Test `write_table()` creates `_table.csv` correctly
+- [x] #22 Test `write_executable()` creates `_exec.py` correctly
+- [x] #23 Test `--dryrun` flag prevents actual submission
+- [x] #24 Test `--cleanup` flag removes temporary files
+- [x] #25 Test error handling when scheduler is unavailable
 
 ### Code Quality
-- [ ] All tests pass with `pytest`
-- [ ] Tests have meaningful assertions and error messages
-- [ ] Test coverage for critical parsing logic > 80%
-- [ ] No debug breakpoints (`pdb.set_trace()`) remain in production code
+- [x] #26 All tests pass with `pytest`
+- [x] #27 Tests have meaningful assertions and error messages
+- [x] #28 Test coverage for critical parsing logic > 80%
+- [x] #29 No debug breakpoints (`pdb.set_trace()`) remain in production code
 
 ### Documentation
-- [ ] README or docs explain how to run tests
-- [ ] Test files include docstrings explaining what they test
-- [ ] Fixtures are documented in `conftest.py`
+- [x] #30 README or docs explain how to run tests
+- [x] #31 Test files include docstrings explaining what they test
+- [x] #32 Fixtures are documented in `conftest.py`
 
 ## Open Questions
 
@@ -209,3 +210,4 @@ def mock_schedd(mocker):
 - **Debug breakpoints**: Lines 53 and 111 in `parse.py` have `pdb.set_trace()` - remove these as part of this task?
 - **HTCondor version**: Should we test against multiple HTCondor Python binding versions?
 - **Test data**: Should fixture files be minimal or representative of real-world usage?
+<!-- AC:END -->
