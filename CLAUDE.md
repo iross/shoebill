@@ -128,6 +128,18 @@ SKIP=pytest git commit
 
 **Note**: Pre-commit hooks are automatically run before each commit. If hooks fail, the commit will be blocked until issues are fixed.
 
+### Git Commit Authorship
+
+When creating git commits:
+
+- **NEVER** modify git config or change the author/committer settings
+- All commits MUST be authored by the user (using their configured git identity)
+- Claude MAY be listed as co-author in commit messages using:
+  ```
+  Co-Authored-By: Claude <noreply@anthropic.com>
+  ```
+- The user is the primary author of all work; Claude assists with implementation
+
 ## Key Implementation Details
 
 - The parser uses `parse_htcss_string()` as the core parsing function, making it testable independently of file I/O
