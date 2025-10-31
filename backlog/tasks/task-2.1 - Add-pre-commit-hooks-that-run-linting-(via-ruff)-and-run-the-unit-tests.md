@@ -1,7 +1,7 @@
 ---
 id: task-2.1
 title: Add pre-commit hooks that run linting (via ruff) and run the unit tests
-status: To Do
+status: Done
 assignee: []
 created_date: '2025-10-31 19:18'
 labels: []
@@ -153,49 +153,49 @@ SKIP=pytest git commit  # Skip just pytest
 ## Acceptance Criteria
 
 ### Installation & Configuration
-- [ ] `pre-commit` added to `pyproject.toml` as dev dependency
-- [ ] `.pre-commit-config.yaml` created in repository root
-- [ ] Ruff configuration added to `pyproject.toml`
-- [ ] Hooks can be installed with `pre-commit install`
+- [x] `pre-commit` added to `pyproject.toml` as dev dependency
+- [x] `.pre-commit-config.yaml` created in repository root
+- [x] Ruff configuration added to `pyproject.toml`
+- [x] Hooks can be installed with `pre-commit install`
 
 ### Ruff Linting Hooks
-- [ ] Ruff linter hook runs on commit
-- [ ] Ruff formatter hook runs on commit
-- [ ] Ruff auto-fixes issues when possible (e.g., import sorting)
-- [ ] Ruff reports violations clearly with file and line numbers
-- [ ] Configuration covers relevant Python style rules
+- [x] Ruff linter hook runs on commit
+- [x] Ruff formatter hook runs on commit
+- [x] Ruff auto-fixes issues when possible (e.g., import sorting)
+- [x] Ruff reports violations clearly with file and line numbers
+- [x] Configuration covers relevant Python style rules
 
 ### Pytest Hook
-- [ ] Pytest runs automatically on commit
-- [ ] Hook fails commit if tests fail
-- [ ] Test output is visible when tests fail
-- [ ] Hook is reasonably fast (< 10 seconds for current test suite)
+- [x] Pytest runs automatically on commit
+- [x] Hook fails commit if tests fail
+- [x] Test output is visible when tests fail
+- [x] Hook is reasonably fast (< 10 seconds for current test suite)
 
 ### Standard Hooks
-- [ ] Trailing whitespace is removed automatically
-- [ ] Files end with newline
-- [ ] YAML files are validated
-- [ ] Large files are blocked from commit
-- [ ] Merge conflict markers are detected
+- [x] Trailing whitespace is removed automatically
+- [x] Files end with newline
+- [x] YAML files are validated
+- [x] Large files are blocked from commit
+- [x] Merge conflict markers are detected
 
 ### Code Quality
-- [ ] All existing code passes ruff checks
-- [ ] All existing code is formatted with ruff
-- [ ] No remaining `pdb.set_trace()` debug breakpoints in production code
-- [ ] Tests pass before initial commit with hooks
+- [x] All existing code passes ruff checks
+- [x] All existing code is formatted with ruff
+- [x] No remaining `pdb.set_trace()` debug breakpoints in production code
+- [x] Tests pass before initial commit with hooks
 
 ### Documentation
-- [ ] README or CLAUDE.md documents pre-commit setup
-- [ ] Instructions explain how to install hooks
-- [ ] Instructions explain how to run hooks manually
-- [ ] Instructions explain how to skip hooks when needed
-- [ ] Instructions explain how to update hook versions
+- [x] README or CLAUDE.md documents pre-commit setup
+- [x] Instructions explain how to install hooks
+- [x] Instructions explain how to run hooks manually
+- [x] Instructions explain how to skip hooks when needed
+- [x] Instructions explain how to update hook versions
 
 ### Developer Experience
-- [ ] Hooks complete in reasonable time (< 15 seconds total)
-- [ ] Error messages are clear and actionable
-- [ ] Hooks can be bypassed with `--no-verify` for emergencies
-- [ ] Individual hooks can be skipped with `SKIP=<hook-id>`
+- [x] Hooks complete in reasonable time (< 15 seconds total)
+- [x] Error messages are clear and actionable
+- [x] Hooks can be bypassed with `--no-verify` for emergencies
+- [x] Individual hooks can be skipped with `SKIP=<hook-id>`
 
 ## Design Decisions
 
