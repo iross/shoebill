@@ -197,9 +197,34 @@ submit_notebook(dryrun=True)  # Auto-detects current notebook
 - [ ] Tests verify exclusion logic
 - [ ] Documentation explains cell tagging approach
 
-## Open Questions
+## Resolved Design Decisions
 
-- **Error handling**: How to report parsing/submission errors back to notebook users? (exceptions, rich output, both?)
-- **Output capture**: Should job submission output be displayed in notebook or just returned as objects?
-- **Notebook state**: Should we serialize notebook variables/state for the job, or only the code?
-- **Cell boundary markers**: Should we add comments in `_exec.py` indicating which cell each code block came from (for debugging)?
+- ✅ **Error handling**: Use standard Python exceptions (can be caught with try/except). Simple and follows Python conventions.
+- ✅ **Output capture**: Display formatted output in notebook cell AND return HTCondor result objects. Provides both immediate visual feedback and programmatic access.
+- ✅ **Notebook state**: Code only - no variable serialization. Jobs start fresh with clean state. Simple and predictable.
+- ✅ **Cell boundary markers**: Optional via `--debug-markers` flag. Adds comments like `# Cell 3` in `_exec.py` when enabled for debugging.
+
+## Implementation Notes
+
+### Notebook Structure
+- Jupyter notebooks are JSON files with cells array
+- Use `nbformat` library for parsing (standard Jupyter tool)
+- Cell types: `markdown` and `code`
+- Each cell has `source` field (string or list of strings)
+
+### Markup Pattern
+- The project uses `%HTCSS` as the markup pattern (consistent across `.htpy`, `.py`, and `.ipynb` files)
+- Pattern defined in `parse.py`: `PATTERN = "%HTCSS"`
+- Sections: TEMPLATE (required), TABLE (required), EXEC (optional)
+
+### Existing Infrastructure to Leverage
+- `parse_htcss_string(text: str) -> dict` - core parsing logic (reuse this!)
+- `write_table(table)` - writes `_table.csv`
+- `write_executable(executable)` - writes `_exec.py`
+- `SUBMIT_REPLACEMENTS` - automatic attribute mapping (RequestCpus → request_cpus, etc.)
+- Comprehensive test fixtures in `tests/conftest.py`
+
+### Dependencies Needed
+- `nbformat` - official Jupyter notebook format library
+- `ipython` - for magic command support and notebook context detection
+- Already have: `click` (CLI), `htcondor` (submission), `pytest` (testing)
